@@ -2,7 +2,11 @@ package com.example.androidtraining1.util;
 
 import com.example.androidtraining1.util.Currency;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CurrencyUtil {
+
     public Currency cUSD = new Currency() {
 
         @Override
@@ -20,6 +24,7 @@ public class CurrencyUtil {
             return "USD";
         }
     };
+
     public Currency cTWD = new Currency() {
 
         @Override
@@ -37,6 +42,7 @@ public class CurrencyUtil {
             return "TWD";
         }
     };
+
     public Currency cJPY = new Currency() {
 
         @Override
@@ -54,6 +60,14 @@ public class CurrencyUtil {
             return "JPY";
         }
     };
+
+    public List<Currency> getCurrencyList(){
+        List<Currency> list = new ArrayList<>();
+        list.add(cUSD);
+        list.add(cTWD);
+        list.add(cJPY);
+        return list;
+    }
 
     private double exchange(double amount, Currency from, Currency to){
         return amount * getExchangeRate(from, to);

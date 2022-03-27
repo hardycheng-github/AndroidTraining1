@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner currency_type;
     EditText currency_value;
     ListView list_exchange;
-    ListAdapter list_exchange_adapter;
+    ExchangeAdapter list_exchange_adapter;
     List<Map<String, Object>> items_exchange = new ArrayList<>();
 
     @Override
@@ -63,9 +63,8 @@ public class MainActivity extends AppCompatActivity {
         exchange_map.put("item_exchange_type", mCurrencyUtil.cJPY.getCurrencyCode());
         exchange_map.put("item_exchange_value", 0);
         items_exchange.add(exchange_map);
-        list_exchange_adapter = new SimpleAdapter(mContext, items_exchange, R.layout.item_exchange,
-                new String[]{"item_exchange_type", "item_exchange_value"},
-                new int[]{R.id.item_exchange_type, R.id.item_exchange_value});
+        list_exchange_adapter = new ExchangeAdapter(mContext, mCurrencyUtil.getCurrencyList());
         list_exchange.setAdapter(list_exchange_adapter);
+        list_exchange_adapter.updateBaseCurrencyAndAmount(mCurrencyUtil.cUSD, 1.0);
     }
 }
