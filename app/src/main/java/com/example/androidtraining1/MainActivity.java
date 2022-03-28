@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -20,11 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = MainActivity.class.getSimpleName();
     Context mContext;
     CurrencyUtil mCurrencyUtil;
     Spinner currency_type;
     EditText currency_value;
+    Button btn_exchange;
     ListView list_exchange;
     ExchangeAdapter list_exchange_adapter;
     List<Map<String, Object>> items_exchange = new ArrayList<>();
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mContext = this;
         initView();
+        initListener();
         initUtil();
         initExchangeList();
     }
@@ -43,6 +47,31 @@ public class MainActivity extends AppCompatActivity {
         currency_type = findViewById(R.id.currency_type);
         currency_value = findViewById(R.id.currency_value);
         list_exchange = findViewById(R.id.list_exchange);
+        btn_exchange = findViewById(R.id.btn_exchange);
+    }
+
+    private void initListener(){
+        btn_exchange.setOnClickListener(v->{
+            Currency currency = mCurrencyUtil.cUSD;
+            switch (currency_type.getSelectedItemPosition()){
+                case 0:
+                    currency = mCurrencyUtil.cUSD;
+                    break;
+                case 1:
+                    currency = mCurrencyUtil.cTWD;
+                    break;
+                case 2:
+                    currency = mCurrencyUtil.cJPY;
+                    break;
+            }
+            double amount = 0.0;
+            try {
+                amount = Integer.valueOf(currency_value.getText().toString());
+            } catch (Exception e) {
+                currency_value.setText("0");
+            }
+            list_exchange_adapter.updateBaseCurrencyAndAmount(currency, amount);
+        });
     }
 
     private void initUtil(){

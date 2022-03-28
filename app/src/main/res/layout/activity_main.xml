@@ -35,8 +35,20 @@
         android:id="@+id/list_exchange"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/item_exchange"
+        app:layout_constraintBottom_toTopOf="@id/btn_exchange"
         app:layout_constraintTop_toBottomOf="@id/currency_type"
-        app:layout_constraintBottom_toBottomOf="parent"></ListView>
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="-34dp"
+        tools:listitem="@layout/item_exchange">
+    </ListView>
+
+    <Button
+        android:id="@+id/btn_exchange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exchange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
