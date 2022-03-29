@@ -1,7 +1,5 @@
 package com.example.androidtraining1.util;
 
-import com.example.androidtraining1.util.Currency;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,8 +72,8 @@ public class CurrencyUtil {
     }
 
     private double getExchangeRate(Currency from, Currency to){
-        double fromRate = getExchangeRateFromUSD(from);
-        double toRate = getExchangeRateFromUSD(to);
+        double fromRate = from.exchangeRateFromUSD();
+        double toRate = to.exchangeRateFromUSD();
         return toRate / fromRate;
     }
 

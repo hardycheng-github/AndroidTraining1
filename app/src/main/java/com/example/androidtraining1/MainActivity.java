@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
     Context mContext;
     CurrencyUtil mCurrencyUtil;
     Spinner currency_type;
@@ -30,20 +29,20 @@ public class MainActivity extends AppCompatActivity {
     Button btn_exchange;
     ListView list_exchange;
     ExchangeAdapter list_exchange_adapter;
-    List<Map<String, Object>> items_exchange = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        mCurrencyUtil = new CurrencyUtil();
         initView();
         initListener();
-        initUtil();
         initExchangeList();
     }
 
     private void initView(){
+        //get the view component after Activity created
         currency_type = findViewById(R.id.currency_type);
         currency_value = findViewById(R.id.currency_value);
         list_exchange = findViewById(R.id.list_exchange);
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initListener(){
+        //update exchange result when exchange button be clicked
         btn_exchange.setOnClickListener(v->{
             Currency currency = mCurrencyUtil.cUSD;
             switch (currency_type.getSelectedItemPosition()){
@@ -68,30 +68,14 @@ public class MainActivity extends AppCompatActivity {
             try {
                 amount = Integer.valueOf(currency_value.getText().toString());
             } catch (Exception e) {
-                currency_value.setText("0");
+                currency_value.setText("");
             }
             list_exchange_adapter.updateBaseCurrencyAndAmount(currency, amount);
         });
     }
 
-    private void initUtil(){
-        mCurrencyUtil = new CurrencyUtil();
-    }
-
     private void initExchangeList(){
-        Map<String, Object> exchange_map;
-        exchange_map = new HashMap<>();
-        exchange_map.put("item_exchange_type", mCurrencyUtil.cUSD.getCurrencyCode());
-        exchange_map.put("item_exchange_value", 0);
-        items_exchange.add(exchange_map);
-        exchange_map = new HashMap<>();
-        exchange_map.put("item_exchange_type", mCurrencyUtil.cTWD.getCurrencyCode());
-        exchange_map.put("item_exchange_value", 0);
-        items_exchange.add(exchange_map);
-        exchange_map = new HashMap<>();
-        exchange_map.put("item_exchange_type", mCurrencyUtil.cJPY.getCurrencyCode());
-        exchange_map.put("item_exchange_value", 0);
-        items_exchange.add(exchange_map);
+        //create ListView Adapter to control list items
         list_exchange_adapter = new ExchangeAdapter(mContext, mCurrencyUtil.getCurrencyList());
         list_exchange.setAdapter(list_exchange_adapter);
         list_exchange_adapter.updateBaseCurrencyAndAmount(mCurrencyUtil.cUSD, 1.0);
