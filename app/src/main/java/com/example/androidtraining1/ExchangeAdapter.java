@@ -4,59 +4,61 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.androidtraining1.util.Currency;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExchangeAdapter extends BaseAdapter {
-    private List<Currency> mList = new ArrayList<>();
+public class ExchangeAdapter extends RecyclerView.Adapter<ExchangeAdapter.ViewHolder> {
+    private List<String> mList = new ArrayList<>();
     private LayoutInflater mInflater;
-    private Currency baseCurrency;
+    private CurrencyService mService;
+    private String baseCurrency;
     private double baseAmount;
 
-    public ExchangeAdapter(Context context, List<Currency> list){
-        mInflater = LayoutInflater.from(context);
-        mList.clear();
-        mList.addAll(list);
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView item_exchange_type;
+        TextView item_exchange_value;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            item_exchange_type = itemView.findViewById(R.id.item_exchange_type);
+            item_exchange_value = itemView.findViewById(R.id.item_exchange_value);
+        }
     }
 
-    public void updateBaseCurrencyAndAmount(Currency base, double amount){
+    public ExchangeAdapter(LayoutInflater inflater, CurrencyService service){
+        mService = service;
+        mInflater = inflater;
+        mList.clear();
+        mList.addAll(service.getCurrencyList());
+    }
+
+    public void updateBaseCurrencyAndAmount(String base, double amount){
         baseCurrency = base;
         baseAmount = amount;
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(mInflater.inflate(R.layout.item_exchange, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String targetCurrency = mList.get(position);
+        holder.item_exchange_type.setText(targetCurrency);
+        String value = String.format("%.2f", mService.exchange(baseAmount, baseCurrency, targetCurrency));
+        holder.item_exchange_value.setText(value);
+    }
+
+    @Override
+    public int getItemCount() {
         return mList.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return mList.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view = mInflater.inflate(R.layout.item_exchange, viewGroup, false);
-        TextView item_exchange_type = view.findViewById(R.id.item_exchange_type);
-        TextView item_exchange_value = view.findViewById(R.id.item_exchange_value);
-        Currency targetCurrency = mList.get(i);
-        item_exchange_type.setText(targetCurrency.getCurrencyCode());
-        String value = "";
-        if(baseCurrency != null){
-            value = String.format("%.2f", baseCurrency.exchangeTo(baseAmount, targetCurrency));
-        }
-        item_exchange_value.setText(value);
-        return view;
     }
 }

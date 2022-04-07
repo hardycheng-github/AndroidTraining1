@@ -5,7 +5,7 @@
     android:layout_height="50dp"
     android:padding="10dp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/item_exchange_type"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -13,9 +13,9 @@
         android:text="Currency"
         app:layout_constraintEnd_toStartOf="@+id/item_exchange_value"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"></TextView>
+        app:layout_constraintStart_toStartOf="parent"></androidx.appcompat.widget.AppCompatTextView>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/item_exchange_value"
         android:layout_width="0dp"
         android:layout_height="match_parent"
