@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     public MainActivity() {
+        super();
         getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
             Log.d(TAG, "onStateChanged: " + event.name());
             if(event.equals(Lifecycle.Event.ON_CREATE)){

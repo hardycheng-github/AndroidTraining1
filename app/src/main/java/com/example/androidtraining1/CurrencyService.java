@@ -27,6 +27,7 @@ public class CurrencyService extends LifecycleService implements Runnable {
     }
 
     public CurrencyService() {
+        super();
         getLifecycle().addObserver((LifecycleEventObserver) (source, event) -> {
             Log.d(TAG, "onStateChanged: " + event.name());
             if(event.equals(Lifecycle.Event.ON_START)){
